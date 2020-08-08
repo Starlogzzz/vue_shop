@@ -1,10 +1,8 @@
 <template>
-  <div id="Home">
     <el-container class="home-container">
       <!-- 头部区域 -->
       <el-header>
         <div class="headtitle">
-          <img src alt />
           <span>后台管理系统</span>
         </div>
         <el-button type="info" @click="logout">退出登录</el-button>
@@ -60,7 +58,6 @@
         </el-main>
       </el-container>
     </el-container>
-  </div>
 </template>
 
 <script>
