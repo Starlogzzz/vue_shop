@@ -172,7 +172,6 @@ export default {
 
       this.catelist = res.data
 
-      console.log(this.catelist)
     },
     // 级联选择框选中项变化，会触发这个函数
     handleChange() {
@@ -180,7 +179,6 @@ export default {
     },
     // tab 页签点击事件的处理函数
     handleTabClick() {
-      console.log(this.activeName)
       this.getParamsData()
     },
     // 获取参数的列表数据
@@ -193,8 +191,6 @@ export default {
         return
       }
 
-      // 证明选中的是三级分类
-      console.log(this.selectedCateKeys)
       // 根据所选分类的Id，和当前所处的面板，获取对应的参数
       const { data: res } = await this.$axios.get(
         `categories/${this.cateId}/attributes`,
@@ -215,7 +211,6 @@ export default {
         item.inputValue = ''
       })
 
-      console.log(res.data)
       if (this.activeName === 'many') {
         this.manyTableData = res.data
       } else {

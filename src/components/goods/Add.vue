@@ -147,11 +147,9 @@ export default {
       }
 
       this.catelist = res.data
-      console.log(this.catelist)
     },
     // 级联选择器选中项变化，会触发这个函数
     handleChange() {
-      console.log(this.addForm.goods_cat)
       if (this.addForm.goods_cat.length !== 3) {
         this.addForm.goods_cat = []
       }
@@ -180,7 +178,6 @@ export default {
           return this.$message.error('获取动态参数列表失败！')
         }
 
-        console.log(res.data)
         res.data.forEach(item => {
           item.attr_vals =
             item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
@@ -198,13 +195,11 @@ export default {
           return this.$message.error('获取静态属性失败！')
         }
 
-        console.log(res.data)
         this.onlyTableData = res.data
       }
     },
     // 处理图片预览效果
     handlePreview(file) {
-      console.log(file)
       this.previewPath = file.response.data.url
       this.previewVisible = true
     },
@@ -221,12 +216,10 @@ export default {
     },
     // 监听图片上传成功的事件
     handleSuccess(response) {
-      console.log(response)
       // 1. 拼接得到一个图片信息对象
       const picInfo = { pic: response.data.tmp_path }
       // 2. 将图片信息对象，push 到pics数组中
       this.addForm.pics.push(picInfo)
-      console.log(this.addForm)
     },
     deepclone(obj){
             // 验证类型
@@ -265,7 +258,7 @@ export default {
           this.addForm.attrs.push(newInfo)
         })
         form.attrs = this.addForm.attrs
-        console.log(form)
+
 
         // 发起请求添加商品
         // 商品的名称，必须是唯一的

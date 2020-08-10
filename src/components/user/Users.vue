@@ -242,7 +242,6 @@ export default {
     },
     // 监听 pagesize 改变的事件
     handleSizeChange(size) {
-      console.log(size)
       this.queryInfo.pagesize = size
       this.getUserList()
     },
