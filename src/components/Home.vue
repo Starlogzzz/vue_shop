@@ -1,152 +1,166 @@
 <template>
-    <el-container class="home-container">
-      <!-- 头部区域 -->
-      <el-header>
-        <div class="headtitle">
-          <span>后台管理系统</span>
-        </div>
-        <el-button type="info" @click="logout">退出登录</el-button>
-      </el-header>
-      <!-- 页面主体 -->
-      <el-container>
-        <!-- 侧边栏 -->
-        <el-aside :width="isCollapse ? '64px' : '200px' ">
-          <div class="toggle-button" @click="toggleCollapse">| | |</div>
-          <!-- 侧边栏菜单区 -->
-          <el-menu
-            class="elmenu"
-            background-color="rgba(51,51,51)"
-            text-color="#fff"
-            active-text-color="#409eff"
-            :unique-opened="true"
-            :collapse="isCollapse"
-            :collapse-transition="false"
-            :router="true"
-            :default-active="activePath"
+  <el-container class="home_container">
+    <!-- aside -->
+    <el-aside width='200px'>      
+      <el-menu
+        :default-active="activePath"
+        class="el-menu-vertical-demo"
+        background-color="#FFFFFF"
+        text-color="#2C3E50"
+        active-text-color="#42B983"
+        unique-opened
+        :collapse="isCollapse"
+        :collapse-transition="false"
+        router
+      >
+        <!-- 一级列表 -->
+        <el-submenu :index="item.id+''" v-for="item in menuList" :key="item.id" class="submenu">
+          <template slot="title">
+            <i :class="iconObj[item.id]"></i>
+            <span>{{item.authName}}</span>
+          </template>
+          <!-- 二级列表 -->
+          <el-menu-item
+            :index="'/'+subItem.path+''"
+            v-for="subItem in item.children"
+            :key="subItem.id"
+            @click="saveDefaultActive('/'+subItem.path+'')"
           >
-            <!-- 一级菜单 -->
-            <el-submenu :index="item.id+''" v-for="item in menulist" :key="item.id">
-              <!-- 一级菜单模板 -->
-              <template slot="title">
-                <!-- 图标 -->
-                <i :class="iconsObj[item.id]"></i>
-                <!-- 文本 -->
-                <span class="iconmargin">{{item.authName}}</span>
-              </template>
-
-              <!-- 二级菜单 -->
-              <el-menu-item
-                :index="'/' + subItem.path"
-                v-for="subItem in item.children"
-                :key="subItem.id"
-                @click="saveNavState('/' + subItem.path)"
-              >
-                <!-- 一级菜单模板 -->
-                <template slot="title">
-                  <!-- 图标 -->
-                  <i class="el-icon-menu"></i>
-                  <!-- 文本 -->
-                  <span>{{subItem.authName}}</span>
-                </template>
-              </el-menu-item>
-            </el-submenu>
-          </el-menu>
-        </el-aside>
-        <!-- 右侧内容 -->
-        <el-main>
-          <router-view></router-view>
-        </el-main>
-      </el-container>
+            <template slot="title">
+              <i class="el-icon-menu" id="special_i"></i>
+              <span id="special_span">{{subItem.authName}}</span>
+            </template>
+          </el-menu-item>
+        </el-submenu>
+      </el-menu>
+    </el-aside>
+    <el-container>
+      <!-- header -->
+      <el-header>
+        <div>
+          <img src alt />
+          <span>活力电商</span>
+        </div>
+        <el-button round size="medium" type="info" @click="logout">退出</el-button>
+      </el-header>
+      <!-- main -->
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+      <!-- footer -->
+      <el-footer></el-footer>
     </el-container>
+  </el-container>
 </template>
 
 <script>
 export default {
-  name: 'Home',
   data() {
     return {
-      // 左侧菜单数据
-      menulist: [],
-      iconsObj: {
-        '125': 'el-icon-s-custom',
-        '103': 'el-icon-s-check',
-        '101': 'el-icon-s-shop',
-        '102': 'el-icon-s-claim',
-        '145': 'el-icon-s-marketing'
+      menuList: [],
+      iconObj: {
+        '125': 'iconfont icon-ai-user',
+        '103': 'iconfont icon-quanxian',
+        '101': 'iconfont icon-shangpin',
+        '102': 'iconfont icon-dingdan',
+        '145': 'iconfont icon-iconfontpaixingbang'
       },
+      // 默认不折叠
       isCollapse: false,
-      // 激活的链接地址
+      // 解决左侧导航栏点击不出现颜色问题
       activePath: ''
-    }
-  },
-  methods: {
-    logout() {
-      window.sessionStorage.clear()
-      this.$router.push('/login')
-      this.$message.success('退出成功')
-    },
-    // 获取所有菜单
-    async getMenuList() {
-      const { data: res } = await this.$axios.get('menus')
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
-      this.menulist = res.data
-    },
-    // 侧边栏折叠
-    toggleCollapse() {
-      this.isCollapse = !this.isCollapse
-    },
-    // 保持链接激活状态
-    saveNavState(activePath){
-      window.sessionStorage.setItem('activePath', activePath)
-      this.activePath = activePath
     }
   },
   created() {
     this.getMenuList()
     this.activePath = window.sessionStorage.getItem('activePath')
+  },
+  methods: {
+    logout() {
+      window.sessionStorage.clear()
+      this.$router.push('/login')
+    },
+    // 初始化列表
+    async getMenuList() {
+      const { data: res } = await this.$axios.get('menus')
+      // console.log(res)
+      if (res.meta.status !== 200) {
+        return this.$message.console.error(res.meta.msg)
+      } else {
+        this.menuList = res.data
+      }
+    },
+    // 菜单折叠
+    tollogeCollapse() {
+      this.isCollapse = !this.isCollapse
+    },
+    saveDefaultActive(activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
+    }
   }
 }
 </script>
 
-<style scoped>
-#Home,
-.home-container {
+<style lang="less" scoped>
+.home_container {
   height: 100%;
 }
-.elmenu {
-  border-right: none;
+.el-aside {
+  background-color: #ffffff;
+  .el-menu {
+    margin-top: 50px;
+    .el-submenu i {
+      font-size: 20px;
+      color: #2c3e50;
+      margin-right: 10px;
+    }
+    .el-submenu span {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    #special_i {
+      font-size: 16px;
+    }
+    #special_span {
+      font-size: 13px;
+      font-weight: 500;
+    }
+  }
 }
 .el-header {
+  background-color: #bbe6d6;
   display: flex;
   justify-content: space-between;
-  padding-left: 0;
   align-items: center;
-  color: #fff;
-  font-size: 20px;
-  background-color: rgb(38, 47, 62);
-}
-.headtitle {
-  display: flex;
-  align-items: center;
-}
-.headtitle span {
-  margin-left: 15px;
-}
-.toggle-button {
-  color: #fff;
-  font-size: 10px;
-  line-height: 24px;
-  text-align: center;
-  cursor: pointer;
-  background-color: rgb(37, 49, 56);
-}
-.el-aside {
-  background-color: rgb(51, 51, 51);
+  font-size: 25px;
+  font-weight: 700;
+  height: 70px !important ;
+  .el-button {
+    background-color: #42b983;
+    border: 0px;
+  }
+  .el-button:hover {
+    background-color: #70cca2;
+  }
 }
 .el-main {
-  background-color: rgb(242, 242, 242);
+  background-color: #c8ebdf;
 }
-.iconmargin {
-  margin-left: 5px;
+.el-footer {
+  background-color: #2c3e51;
+  height: 20px !important;
+}
+.menuButton {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 20px;
+  background-color: #42b983;
+  border: 0px;
+  letter-spacing: 0.3em;
+}
+.menuButton:hover {
+  background-color: #70cca2;
 }
 </style>
