@@ -83,7 +83,7 @@ export default {
 
 <style scoped>
 #Login {
-  background-color: rgb(187,230,214);
+  background-color: rgb(253,221,155);
   height: 100%;
 }
 .login_box {

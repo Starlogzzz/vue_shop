@@ -129,7 +129,7 @@ export default {
   }
 }
 .el-header {
-  background-color: #bbe6d6;
+  background-color:rgb(117,175,204);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -137,7 +137,7 @@ export default {
   font-weight: 700;
   height: 70px !important ;
   .el-button {
-    background-color: #42b983;
+    background-color: #70cca2;
     border: 0px;
   }
   .el-button:hover {
@@ -145,7 +145,7 @@ export default {
   }
 }
 .el-main {
-  background-color: #c8ebdf;
+  background-color:rgb(248,215,20);
 }
 .el-footer {
   background-color: #2c3e51;
